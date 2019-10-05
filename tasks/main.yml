@@ -24,8 +24,7 @@
     state: stopped
   when: running.stdout == 'splunkd'
 
-
-- name: stop splunk if installed SplunkForwarder
+- name: stop splunk when service name is SplunkForwarder
   service:
     name: SplunkForwarder
     state: stopped
@@ -35,7 +34,6 @@
   group:
     name: "{{ splunk_nix_group }}"
     state: present
-#  notify: restart splunk
 
 - name: Configure splunk user
   user:
@@ -45,7 +43,6 @@
     expires: no
     group: "{{ splunk_nix_group }}"
     home: /opt/splunkforwarder
- # notify: restart splunk 
 
 - name: Configure splunk forwarder directory
   file:
@@ -54,7 +51,6 @@
     group: "{{ splunk_nix_group }}"
     state: directory
     recurse: yes
-  #notify: restart splunk
 
 - name: Copy splunkforwarder package to host
   copy:
@@ -76,7 +72,6 @@
   when:
   - ansible_pkg_mgr == 'yum' or ansible_pkg_mgr == 'zypper'
   - splunk_installed.rc|int == 1 or ( splunk_installed.rc|int == 0 and ( splunkforwarder_version.0|int > splunk_installed.stdout_lines.0|int or splunkforwarder_version.1|int > splunk_installed.stdout_lines.1|int or splunkforwarder_version.2|int > splunk_installed.stdout_lines.2|int ) )
- # notify: stop splunk
   args:
     warn: no
 
@@ -86,7 +81,7 @@
   when:
   - ansible_pkg_mgr == 'apt'
   - splunk_installed.rc|int == 1 or ( splunk_installed.rc|int == 0 and ( splunkforwarder_version.0|int > splunk_installed.stdout_lines.0|int or splunkforwarder_version.1|int > splunk_installed.stdout_lines.1|int or splunkforwarder_version.2|int > splunk_installed.stdout_lines.2|int ) )
-  #notify: stop splunk
+
 - debug:
     msg="{{ splunk_installed.rc }}"
 
@@ -123,8 +118,6 @@
 
 - name: Enable splunk auto-start at boot
   shell: "/opt/splunkforwarder/bin/splunk enable boot-start -user {{ splunk_nix_user }} --accept-license --answer-yes"
-#  when:
-#  - splunk_installed.rc|int != 0
   
 - debug:
     msg="{{ splunk_installed.rc|int }}"   
@@ -136,7 +129,6 @@
     owner: "{{ splunk_nix_user }}"
     group: "{{ splunk_nix_group }}"
     mode: 0600
-#  notify: restart splunk
 
 - name: reset failed splunkforwarder service
   shell: 'systemctl reset-failed SplunkForwarder.service'
