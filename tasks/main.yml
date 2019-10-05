@@ -139,14 +139,14 @@
     name: SplunkForwarder.service
     state: restarted 
     enabled: yes 
-  when: running.stdout == 'splunkd'
+  when:  ansible_distribution == 'Red Hat'
   
 - name: restart splunk.service
   service:
     name: splunk.service
     state: restarted 
     enabled: yes 
-  when:  ansible_distribution == 'CentOS'
+  when:  ansible_distribution == 'CentOS' or  ansible_distribution == 'Ubuntu' or  ansible_distribution == 'Debian'
 
 - name: Cleanup response file
   file:
