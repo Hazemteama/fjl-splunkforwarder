@@ -134,13 +134,20 @@
   shell: 'systemctl reset-failed SplunkForwarder.service'
   when: running.stdout == 'splunkd'
 
-- name: restart splunk
+- name: restart SplunkForwarder
   service:
     name: SplunkForwarder.service
     state: restarted 
     enabled: yes 
   when: running.stdout == 'splunkd'
   
+- name: restart splunk.service
+  service:
+    name: splunk.service
+    state: restarted 
+    enabled: yes 
+  when:  ansible_distribution == 'CentOS'
+
 - name: Cleanup response file
   file:
     path: /var/tmp/splunkresponsefile
