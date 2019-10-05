@@ -1,6 +1,6 @@
 ---
 # handlers file for ansible-splunk-forwarder
-- name: reset failed splunkforwarder service
+- name: reset splunk
   shell: 'systemctl reset-failed SplunkForwarder.service'
 
 - name: stop splunk
