@@ -1,0 +1,35 @@
+galaxy_info:
+  author: David Ponessa
+  description: Ansible role for deploying and setting up a basic deployment server configuration for Splukn Universal Forwarder
+  license: GPLv2
+  min_ansible_version: 2.3
+
+  platforms:
+  - name: EL
+    versions:
+    - all
+  - name: SLES
+    versions:
+    - all
+  - name: opensuse
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Fedora
+    versions:
+    - all
+  - name: Mint
+    versions:
+    - all
+  - name: Solaris
+    versions:
+    - 10
+
+  galaxy_tags: [system,splunk,automation,monitoring]
+
+dependencies: []
